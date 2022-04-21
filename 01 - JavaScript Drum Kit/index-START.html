@@ -87,7 +87,7 @@
   }
   
   const keys = document.querySelectorAll('.key');
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition)) //Ah! okay, so transition end is another one of those built-in eventListeners for JS, just like how 'keydown' and 'onClick' is
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)) //Ah! okay, so transition end is another one of those built-in eventListeners for JS, just like how 'keydown' and 'click' is
   
 window.addEventListener('keydown', playSound);
 </script>
