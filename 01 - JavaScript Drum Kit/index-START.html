@@ -11,6 +11,7 @@
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
+      <!-- <kbd> is meant for specifying keyboard input, and acts similar to a span??? -->
       <span class="sound">clap</span>
     </div>
     <div data-key="83" class="key">
@@ -56,9 +57,39 @@
   <audio data-key="74" src="sounds/snare.wav"></audio>
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
+  <!-- can use keycode.info to find out which key has which key number -->
 
 <script>
-
+  // focus on listening to a keyUp event
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+    // creating a variable that will select the sound that is to be played when a key is pressed--we use template literals for the audio ELEMENT with an attribute of data-key because that information will change depending on what key the  user presses
+    // console.log(audio);
+    
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`) //now we're going to try to add the animated changes to the div when the keys are pressed
+    // console.log(key);
+    key.classList.add('playing'); //adding the class of .playing to the selected element/class
+    
+    if (!audio) return; //this is to stop the sound from playing if any other key is pressed
+    
+    audio.currentTime = 0; //this will ensure that the sound can be played over and over again without waiting for the sound to completely end
+    
+    audio.play(); //will play the audio element
+  };
+  
+  function removeTransition(e) {
+    // console.log(e); //this will show us all the transitions that happen to the element when we press key down because of the added class of .playing
+    
+    if(e.propertyName !== 'transform') return; //skip it if it is not a transform
+    // console.log(e.propertyName);
+    
+    this.classList.remove('playing'); //this refers to the key that has the addEventListner
+  }
+  
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)) //Ah! okay, so transition end is another one of those built-in eventListeners for JS, just like how 'keydown' and 'onClick' is
+  
+window.addEventListener('keydown', playSound);
 </script>
 
 
