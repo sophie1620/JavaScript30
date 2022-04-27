@@ -26,6 +26,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -43,6 +44,11 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex: 1; /* will evenly distrubute the space between all the panels */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -56,6 +62,27 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      /* border: 1px solid red; */
+      flex: 1 0 auto; /* this has to do with equally sizing all the things */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+
+    .panel.open-active > *:first-child {
+      transform: translateY(0);
+    }
+
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+
+    .panel.open-active > *:last-child {
+      transform: translateY(0);
     }
 
     .panel p {
@@ -70,6 +97,7 @@
     }
 
     .panel.open {
+      flex: 5; /* when it has a class of open, it will take 5x the amount of extra room as the other ones ~ this is flex grow */
       font-size: 40px;
     }
 
@@ -105,6 +133,26 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
+
+    function toggleOpen() {
+      // console.log('hello');
+      this.classList.toggle('open'); //do not add a period here!
+      // this will target the classList of the specific item and will add a class of ".open" if it doesn't have it already or remove the the ".open" class if it already exists
+    } 
+
+    function toggleActive(e) {
+      console.log(e.propertyName);
+      if (e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+        console.log('flex');
+      }
+    }
+
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+
+    panels.forEach(panel => panel.
+    addEventListener('transitionend', toggleActive));
 
   </script>
 
