@@ -21,6 +21,21 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
 
     /*
       misc styles, nothing to do with CSS variables
@@ -45,6 +60,24 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+    // this will give us a nodeList, and a nodeList is different from an array because it is more limited in the prototypes/methods that we can use with nodeList 
+
+    function handleUpdate() {
+      // console.log(this.value); //will give us the value of all changes made by the user
+      // console.log(this.dataset); //will contain all the data attributes that we have set in the elements and put it in an element
+      const suffix = this.dataset.sizing || ''; //will show the suffix as px when appropriate, else it will show nothing because it will be specific to the hex color
+
+      // console.log(document); //this is an object
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+      // selecting each element with the different name attributes (each element has a name) and then changing that property to a new value that the user selects/changes and then we need to add the suffix so it recongizes that it is in the unit of px
+    }
+
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+      //for each input, we will have an eventListener
+        // so it will be like function input() { input.addEventListener('eventListener', function)};
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
   </script>
 
 </body>

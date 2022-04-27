@@ -38,27 +38,105 @@
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
 
+      // similar to writing a forEach function, where we have the plural and then the singular form in the bracket that will be used as a parameter for a function
+    const fifteen = inventors.filter(inventor => {
+      if (inventor.year >= 1500 && inventor.year < 1600) {
+        return true;
+      }
+    });
+
+    console.table(fifteen);
+
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+
+    const fullNames = inventors.map(inventor => {
+      return inventor.first + ' ' + inventor.last
+    });
+
+    // alt writing:
+    // const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last}`);
+    console.log(fullNames);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
 
+    const ordered = inventors.sort(function(a, b) {
+      if (a.year > b.year) {
+        return 1
+      } else {
+        return -1
+      }
+    });
+
+    // alt writing: (with ternery operators)
+    //  const ordered = inventors.sort((a, b) => a.year > b.year ? 1 : -1);
+    console.table(ordered);
+
+
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
 
+      // reduce will take items in and allow us to build something on each individual items in the array
+    const totalYears = inventors.reduce((total, inventor) => {
+      return total + (inventor.passed - inventor.year);
+    }, 0);
+
+    console.log(totalYears);
+
+
     // 5. Sort the inventors by years lived
+
+    const oldest = inventors.sort(function(a, b) {
+      const lastGuy = a.passed - a.year;
+      const nextGuy = b.passed - b.year;
+      return lastGuy > nextGuy ? 1 : -1; //if the nextGuy has lived longer than the lastGuy, then s/he will have an integer of 1, but if not, then an integer of -1, and this sorting and organizing will be done for each one and then the order will be generated
+    });
+
+    console.table(oldest);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+    // const category = document.querySelector('.mw-category');
+    // const links = Array.from(category.querySelectorAll('a'));
+    // // const links = [... category.querySelectorAll('a')]; //alt way of making a nodeList into an array
+
+    // const de = links
+    //   .map(link => link.textContent)
+    //   .filter(streetName => streetName.includes('de')); //this is to identify the text from within the <a>
+
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const alpha = people.sort(function(lastOne, nextOne) {
+      // console.log(lastOne); //this will give us each item in the index (but they are not in an array)
+      // const parts = lastOne.split(', '); //this will put each name into its own array--so last name is at index 0 and first name is at index of 1
+
+      // we can destructure the split, so that we put them into their own variables, rather than an array
+      const [aLast, aFirst] = lastOne.split(', ');
+      const [bLast, bFirst] = nextOne.split(', ');
+      // console.log(aLast, aFirst); //will give us the names without the comma and space in between the last and first name
+
+      return aLast > bLast ? 1 : -1;
+    });
+
+    console.log(alpha);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const transportation = data.reduce(function(obj, item) {
+      // console.log(item);
+      if (!obj[item]) {
+        obj[item] = 0; //if the item doesn't exist then keep its tally as 0
+      }
+      obj[item]++;
+      return obj;
+    }, {}); //we have this {} at the end here, so that the array can be put in an object, since we need that key property value to tally up the number of repeats
+
+    console.log(transportation);
 
   </script>
 </body>
