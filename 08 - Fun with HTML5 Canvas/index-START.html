@@ -5,8 +5,78 @@
   <title>HTML5 Canvas</title>
 </head>
 <body>
+
 <canvas id="draw" width="800" height="800"></canvas>
+<!-- this is a canvas element! WHOA! I didn't know that this element existed! -->
+
+
 <script>
+
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+  // selecting the canvas so that users are making 2d drawings
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // this is going to dictate how the user drawings may appear on the canvas
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 80;
+
+
+  let isDrawing = false;
+  // something about a flag that tells us if what the mouse is doing needs to be put onto the canvas
+
+  let lastX = 0;
+  let lastY = 0;
+  // this is going to tell the canvas where the line starts being drawn at
+  let hue = 0;
+  let direction = true;
+
+  function draw(e) {
+    if (!isDrawing) return; //this will stop the function from running if the mouse is not mousedown
+    console.log(e);
+
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+    // we can destructure this to look like this:
+    // [lastX, lastY] = [e.offsetX, e.offsetY];
+
+    hue++; //this is so that the line will change into a rainbow line
+    if (hue >= 360) {
+      hue = 0;
+    }
+
+    if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+      direction = ! direction
+    }
+    if (direction) {
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
+    }
+  } //end of the draw function
+  
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY]; //this is so that we can start a new drawing without having to connect to the last part of where the previous drawing ended
+  });
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false); //ah, so mouseout is for when the cursor goes outside of the canvas window
+
+
+
 </script>
 
 <style>
