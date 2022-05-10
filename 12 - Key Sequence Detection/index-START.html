@@ -6,7 +6,29 @@
   <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
+
 <script>
+
+  const pressed = [];
+  const secretCode = 'wesbos';
+
+  window.addEventListener('keyup', (e) => {
+    // console.log(e.key); //this will tell us what key was pressed on the keyboard
+    
+    pressed.push(e.key);
+    pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length); // (-7, 6) ~ not hardcoding it, so that the secretCode can change we this code will still be valid
+    // ah.. so we start with a negative number, because we are counting backwards from the end and not the other way around? And we need to -1, because in JS, we start counting at 0...?
+
+    if (pressed.join('').includes(secretCode)) {
+      console.log('ding! ding! you did it!');
+      cornify_add();
+    }
+
+    console.log(pressed);
+  });
+
+
+
 </script>
 </body>
 </html>

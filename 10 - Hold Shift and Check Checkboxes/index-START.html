@@ -50,10 +50,10 @@
       border-left: 1px solid #D1E2FF;
     }
   </style>
-   <!--
-   The following is a common layout you would see in an email client.
+  <!--
+  The following is a common layout you would see in an email client.
 
-   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
+  When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
 
   -->
   <div class="inbox">
@@ -98,28 +98,25 @@
 <script>
 
   const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
-  console.log(checkboxes);
-
-  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck ));
+  // console.log(checkboxes);
 
   let lastChecked;
   // we use let because this variable will be re-assigned consistantly
 
   function handleCheck(e) {
-    // console.log(e);
+    console.log('clicked!', e);
 
     // check if they had the shift key down
     // and check that they are checking it
 
     let inBetween = false;
 
-
     // writing the conditional, which is when BOTH the shift key is pressed AND the boxes are checked
-    if (e.shiftkey && this.checked) {
+    if (e.shiftKey && this.checked) {
       // go ahead and do what we please
       // loop over every checkbox to listen to see where the checkboxes are checked, so that we can turn the inBetween into true
+      console.log('checkbox');
       checkboxes.forEach(checkbox => {
-        console.log(checkbox);
         if(checkbox === this || checkbox === lastChecked) {
           inBetween = !inBetween // if inBetween is false, set it to be true
 
@@ -136,6 +133,8 @@
     lastChecked = this;
     // this will re-assign the last checked item to be the lastChecked item
   }
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
 
 
 </script>
