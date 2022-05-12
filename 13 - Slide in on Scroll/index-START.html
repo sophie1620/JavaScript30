@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>Slide in on scroll</title>
 </head>
 <body>
 
@@ -44,6 +44,8 @@
 
   <script>
     function debounce(func, wait = 20, immediate = true) {
+      // the function will run or do an action once every 20seconds
+      // it can be googled online
       var timeout;
       return function() {
         var context = this, args = arguments;
@@ -57,6 +59,36 @@
         if (callNow) func.apply(context, args);
       };
     }
+
+    const slideImages = document.querySelectorAll('.slide-in');
+
+    function checkSlide(e) {
+      // console.log(e);
+
+      // console.log(window.scrollY); // this tells us how much we have scrolled based on the very top of the page
+
+      slideImages.forEach(slideImage => {
+
+        const slideInAt = (window.scrollY + window.innerHeight) - slideImage.height / 2 // will give us access to start measuring the scroll from the bottom instead of the top, and then we subtract that from the image's half height
+
+        const imageBottom = slideImage.offsetTop + slideImage.height // offsetTop tells us how far the top of the image is from the top of the window
+        // and then we add the height of the image, so that we can use the bottom of the image as a reference point
+
+        const isHalfShown = slideInAt > slideImage.offsetTop; // so the halfway point of the picture is bigger than the difference between the top of the image from the window
+
+        const isNotScrolledPast = window.scrollY < imageBottom; // to check if the image has been scolled past or not
+
+        if (isHalfShown && isNotScrolledPast) {
+          slideImage.classList.add('active');
+        } else {
+          slideImage.classList.remove('active');
+        }
+
+        // console.log(slideInAt);
+    });
+    }
+
+    window.addEventListener('scroll', debounce(checkSlide));
 
   </script>
 
