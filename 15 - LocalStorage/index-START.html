@@ -15,10 +15,13 @@
 
   <div class="wrapper">
     <h2>LOCAL TAPAS</h2>
+
     <p></p>
+
     <ul class="plates">
       <li>Loading Tapas...</li>
     </ul>
+
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
@@ -28,7 +31,58 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  function addItem(e) {
+    // console.log('hello'); //we don't see it because the page has refreshed, so we need to prevent default
+    e.preventDefault();
+
+    const text = this.querySelector('[name=item]').value; //when we use this, we are referencing the form that we have previously selected as addItems
+
+    const item = {
+      text,
+      done: false
+    }
+
+    // console.log(item);
+    items.push(item);
+    populateList(items, itemsList);
+
+    localStorage.setItem('items', (JSON.stringify(items)));
+    // console.table(items);
+    this.reset();
+  }
+
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `
+      <li>
+        <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''}  />
+        <label for="item${i}">${plate.text}</label>
+      </li>
+      `;
+    }).join('');
+  }
+
+  function toggleDone(e) {
+    if (!e.target.matches('input')) return; //if the e.target IS NOT the input, just return (as in do nothing)
+    // console.log(e.target);
+
+    const el = e.target;
+    // console.log(el.dataset.index); // basically like how we have to assign each list item an unique id to keep track of list items in React
+
+    const index = el.dataset.index;
+    items[index].done = !items[index].done;
+
+    //now we update this checked checkbox in local storage
+    localStorage.setItem('items', (JSON.stringify(items)));
+    populateList(items, itemsList);
+  }
+
+  addItems.addEventListener('submit', addItem);
+  itemsList.addEventListener('click', toggleDone);
+
+  populateList(items, itemsList)
 
 </script>
 
