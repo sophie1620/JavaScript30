@@ -26,15 +26,56 @@
     justify-content: center;
     align-items: center;
     color: black;
+    border: 1px dotted blue;
   }
 
   h1 {
     text-shadow: 10px 10px 0 rgba(0,0,0,1);
     font-size: 100px;
+    border: 1px dotted rebeccapurple;
   }
   </style>
 
 <script>
+
+  const hero = document.querySelector('.hero');
+  const text = document.querySelector('h1');
+  const walk = 100; //100px //dictates how 'far away' the shadow will 'walk' from the original location~basically the range
+
+  console.log('hero', hero.offsetWidth, hero.offsetHeight);
+  console.log('h1', text);
+
+  function shadow(e) {
+    // console.log(e.target);
+
+    // const width = hero.offsetWidth;
+    // const height = hero.offsetHeight;
+
+    // to destructure:
+    const { offsetWidth: width, offsetHeight: height } = hero;
+    let { offsetX: x, offsetY: y } = e; //so we are focusing on only the offsetX and offsetY value from the e object
+
+    // console.log(x, y);
+    // console.log('this', this); //this refers to the hero object
+
+    if (this !== e.target) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    } //this is so that the x and y values dont reset when we hover over the h1
+
+    const xWalk = Math.round((x / width * walk) - (walk / 2));
+    const yWalk = Math.round((y / height * walk) - (walk / 2));
+    // console.log(xWalk, yWalk);
+
+    text.style.textShadow = `
+    ${xWalk}px ${yWalk}px 0 rgba(255, 0, 255, 0.7), 
+    ${xWalk *-1}px ${yWalk}px 0 rgba(0, 255, 255, 0.7), 
+    ${xWalk *-1}px ${yWalk}px 0 rgba(0, 255, 0, 0.7), 
+    ${xWalk}px ${yWalk * -1}px  0 rgba(0, 0, 255, 0.7)
+    `;
+  }
+
+  hero.addEventListener('mousemove', shadow);
 </script>
 </body>
 </html>

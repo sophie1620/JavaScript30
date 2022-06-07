@@ -75,7 +75,9 @@
     items[index].done = !items[index].done;
 
     //now we update this checked checkbox in local storage
+    console.log(localStorage);
     localStorage.setItem('items', (JSON.stringify(items)));
+
     populateList(items, itemsList);
   }
 
